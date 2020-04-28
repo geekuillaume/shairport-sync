@@ -34,6 +34,7 @@ jobs:
 
       - name: Install libconfig
         if: "runner.os == 'Windows'"
+        shell: cmd
         run: |
           git clone https://github.com/hyperrealm/libconfig.git
           cd libconfig
