@@ -21,6 +21,10 @@ jobs:
         if: "runner.os == 'Linux'"
         run: sudo apt install -y autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev avahi-daemon libavahi-client-dev
 
+      - name: Install libs
+        if: "runner.os == 'macOS'"
+        run: brew install --only-dependencies --build-bottle shairport-sync
+
       - name: Build
         run: autoreconf -i -f && ./configure --with-avahi --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns && make
 
