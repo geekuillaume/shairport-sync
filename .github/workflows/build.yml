@@ -1,0 +1,27 @@
+name: Build/release
+
+on: push
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os:
+        - ubuntu-latest
+        # - macos-latest
+        # - windows-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: Build
+        run: autoreconf -i -f && ./configure --with-avahi --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns && make
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ format( 'shairport-sync-{0}-x64', runner.os ) }}
+          path: ./shairport-sync
