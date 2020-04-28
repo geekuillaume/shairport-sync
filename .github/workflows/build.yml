@@ -58,7 +58,7 @@ jobs:
         if: "runner.os == 'Linux'"
         run: |
           autoreconf -i -f
-          ./configure --with-avahi --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns LDFLAGS="-static"
+          ./configure --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns LDFLAGS="-static"
           make
 
       - name: Upload build artifacts
