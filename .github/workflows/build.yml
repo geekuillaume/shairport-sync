@@ -60,7 +60,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Build for armv7
-      run: ./scripts/build_for_arch.sh
+      run: ./build_scripts/build_for_arch.sh
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1
