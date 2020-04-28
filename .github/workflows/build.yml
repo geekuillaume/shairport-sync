@@ -25,6 +25,12 @@ jobs:
         if: "runner.os == 'macOS'"
         run: brew install --only-dependencies --build-bottle shairport-sync
 
+      - name: Install libs
+        if: "runner.os == 'Windows'"
+        run: |
+          curl -o cygwin.exe https://cygwin.com/setup-x86_64.exe
+          ./cygwin.exe -P cygrunsrv,dbus,avahi,avahi-tools,gnome-keyring,libavahi-client-devel,libglib2.0-devel,openssl,pkg-config,autoconf,automake,clang,libdaemon-devel,popt-devel,make,libao-devel,openssl-devel,libtool,git,wget,flex,bison -s "http://www.mirrorservice.org/sites/sourceware.org/pub/cygwin/" -O --no-admin -q
+
       - name: Build
         if: "runner.os == 'macOS'"
         run: |
@@ -44,3 +50,20 @@ jobs:
         with:
           name: ${{ format( 'shairport-sync-{0}-x64', runner.os ) }}
           path: ./shairport-sync
+
+
+  release-armv7:
+    name: Prebuild lib ARMv7
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v1
+
+    - name: Build for armv7
+      run: ./scripts/build_for_arch.sh
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: ${{ format( 'shairport-sync-{0}-arm', runner.os ) }}
+        path: ./shairport-sync
