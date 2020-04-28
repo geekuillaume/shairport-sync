@@ -11,7 +11,7 @@ jobs:
         os:
         - ubuntu-latest
         - macos-latest
-        - windows-latest
+        # - windows-latest
 
     steps:
       - name: Check out Git repository
@@ -25,24 +25,24 @@ jobs:
         if: "runner.os == 'macOS'"
         run: brew install --only-dependencies --build-bottle shairport-sync
 
-      - name: Install libs
-        if: "runner.os == 'Windows'"
-        run: |
-          choco install --no-progress cygwin
-          C:\tools\cygwin\cygwinsetup.exe -OqgnNd -s http://mirrors.kernel.org/sourceware/cygwin/ -R C:/tools/cygwin -P cygrunsrv,dbus,avahi,avahi-tools,gnome-keyring,libavahi-client-devel,libglib2.0-devel,openssl,pkg-config,autoconf,automake,clang,libdaemon-devel,popt-devel,make,libao-devel,openssl-devel,libtool,git,wget,flex,bison
-          setx path "%PATH%;C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin"
+      # - name: Install libs
+      #   if: "runner.os == 'Windows'"
+      #   run: |
+      #     choco install --no-progress cygwin
+      #     C:\tools\cygwin\cygwinsetup.exe -OqgnNd -s http://mirrors.kernel.org/sourceware/cygwin/ -R C:/tools/cygwin -P cygrunsrv,dbus,avahi,avahi-tools,gnome-keyring,libavahi-client-devel,libglib2.0-devel,openssl,pkg-config,autoconf,automake,clang,libdaemon-devel,popt-devel,make,libao-devel,libssl-devel,libtool,git,wget,flex,bison
+      #     setx path "%PATH%;C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin"
 
-      - name: Install libconfig
-        if: "runner.os == 'Windows'"
-        shell: bash
-        run: |
-          export PATH=$PATH:C:\tools\cygwin\bin:C:\tools\cygwin\usr\bin
-          git clone https://github.com/hyperrealm/libconfig.git
-          cd libconfig
-          autoreconf -fi
-          ./configure
-          make
-          make install
+      # - name: Install libconfig
+      #   if: "runner.os == 'Windows'"
+      #   shell: bash
+      #   run: |
+      #     export PATH=$PATH:C:\tools\cygwin\bin:C:\tools\cygwin\usr\bin
+      #     git clone https://github.com/hyperrealm/libconfig.git
+      #     cd libconfig
+      #     autoreconf -fi
+      #     ./configure
+      #     make
+      #     make install
 
       - name: Build
         if: "runner.os == 'macOS'"
@@ -51,19 +51,21 @@ jobs:
           export LDFLAGS="-L/usr/local/opt/openssl/lib"
           export CPPFLAGS="-I/usr/local/opt/openssl/include"
           export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
-          ./configure --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns --with-os=darwin
+          ./configure --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns --with-os=darwin LDFLAGS="-static"
           make
 
       - name: Build
         if: "runner.os == 'Linux'"
-        run: autoreconf -i -f && ./configure --with-avahi --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns && make
+        run: |
+          autoreconf -i -f
+          ./configure --with-avahi --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns LDFLAGS="-static"
+          make
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1
         with:
           name: ${{ format( 'shairport-sync-{0}-x64', runner.os ) }}
           path: ./shairport-sync
-
 
   release-armv7:
     name: Prebuild lib ARMv7
