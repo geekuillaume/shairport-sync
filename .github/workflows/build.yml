@@ -26,6 +26,17 @@ jobs:
         run: brew install --only-dependencies --build-bottle shairport-sync
 
       - name: Build
+        if: "runner.os == 'macOS'"
+        run: |
+          autoreconf -i -f
+          export LDFLAGS="-L/usr/local/opt/openssl/lib"
+          export CPPFLAGS="-I/usr/local/opt/openssl/include"
+          export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+          ./configure --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns --with-os=darwin
+          make
+
+      - name: Build
+        if: "runner.os == 'Linux'"
         run: autoreconf -i -f && ./configure --with-avahi --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns && make
 
       - name: Upload build artifacts
