@@ -17,6 +17,10 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
+      - name: Install libs
+        if: "runner.os == 'Linux'"
+        run: sudo apt install -y autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev avahi-daemon libavahi-client-dev
+
       - name: Build
         run: autoreconf -i -f && ./configure --with-avahi --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns && make
 
