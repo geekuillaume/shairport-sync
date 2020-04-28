@@ -51,14 +51,14 @@ jobs:
           export LDFLAGS="-L/usr/local/opt/openssl/lib"
           export CPPFLAGS="-I/usr/local/opt/openssl/include"
           export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
-          ./configure --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns --with-os=darwin LDFLAGS="-static"
+          ./configure --with-ssl=mbedtls --with-metadata --with-stdout --with-tinysvcmdns --with-os=darwin LDFLAGS="-static"
           make
 
       - name: Build
         if: "runner.os == 'Linux'"
         run: |
           autoreconf -i -f
-          ./configure --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns LDFLAGS="-static"
+          ./configure --with-ssl=mbedtls --with-metadata --with-stdout --with-tinysvcmdns LDFLAGS="-static"
           make
 
       - name: Upload build artifacts
