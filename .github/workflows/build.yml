@@ -30,7 +30,7 @@ jobs:
         run: |
           choco install --no-progress cygwin
           C:\tools\cygwin\cygwinsetup.exe -OqgnNd -s http://mirrors.kernel.org/sourceware/cygwin/ -R C:/tools/cygwin -P cygrunsrv,dbus,avahi,avahi-tools,gnome-keyring,libavahi-client-devel,libglib2.0-devel,openssl,pkg-config,autoconf,automake,clang,libdaemon-devel,popt-devel,make,libao-devel,openssl-devel,libtool,git,wget,flex,bison
-          echo '::set-env name=PATH::C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin'
+          setx path "%PATH%;C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin"
 
       - name: Install libconfig
         if: "runner.os == 'Windows'"
