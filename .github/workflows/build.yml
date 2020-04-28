@@ -20,7 +20,7 @@ jobs:
 
       - name: Install libs
         if: "runner.os == 'Linux'"
-        run: sudo apt install -y autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev avahi-daemon libavahi-client-dev
+        run: sudo apt install -y libmbedtls-dev autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev avahi-daemon libavahi-client-dev
 
       - name: Install libs
         if: "runner.os == 'macOS'"
