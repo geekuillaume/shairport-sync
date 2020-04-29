@@ -57,7 +57,7 @@ jobs:
           ./configure --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns --with-os=darwin
           make
           mkdir shairport_with_libs
-          find `ldd ./shairport-sync | sed -En "s/(libpopt|libconfig)\.so.*\=> (.*) \(.*/\2/p"` -exec cp -- {} ./shairport_with_libs/ \;
+          find `otool -L ./shairport-sync | sed -En "s/(.*\/(libpopt|libconfig).*)\(.*/\1/p"` -exec cp -- {} ./shairport_with_libs/ \;
           cp ./shairport-sync ./shairport_with_libs
 
       - name: Build
@@ -69,7 +69,6 @@ jobs:
           mkdir shairport_with_libs
           find `ldd ./shairport-sync | sed -En "s/(libpopt|libconfig)\.so.*\=> (.*) \(.*/\2/p"` -exec cp -- {} ./shairport_with_libs/ \;
           cp ./shairport-sync ./shairport_with_libs
-
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1
