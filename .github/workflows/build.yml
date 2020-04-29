@@ -54,7 +54,7 @@ jobs:
           export LDFLAGS="-L/usr/local/opt/openssl/lib"
           export CPPFLAGS="-I/usr/local/opt/openssl/include"
           export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
-          ./configure --with-ssl=openssl --with-metadata --with-stdout --with-avahi --with-os=darwin
+          ./configure --with-ssl=openssl --with-metadata --with-stdout --with-tinysvcmdns --with-dns_sd --with-os=darwin
           make
           mkdir shairport_with_libs
           find `otool -L ./shairport-sync | sed -En "s/(.*\/(libpopt|libconfig).*)\(.*/\1/p"` -exec cp -- {} ./shairport_with_libs/ \;
