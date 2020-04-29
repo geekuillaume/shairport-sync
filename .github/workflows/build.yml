@@ -76,18 +76,18 @@ jobs:
           name: ${{ format( 'shairport-sync-{0}-x64', runner.os ) }}
           path: ./shairport_with_libs
 
-  # release-armv7:
-  #   name: Prebuild lib ARMv7
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Check out Git repository
-  #     uses: actions/checkout@v1
+  release-armv7:
+    name: Prebuild lib ARMv7
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v1
 
-  #   - name: Build for armv7
-  #     run: ./build_scripts/build_for_arch.sh
+    - name: Build for armv7
+      run: ./build_scripts/build_for_arch.sh
 
-  #   - name: Upload build artifacts
-  #     uses: actions/upload-artifact@v1
-  #     with:
-  #       name: ${{ format( 'shairport-sync-{0}-arm', runner.os ) }}
-  #       path: ./shairport-sync
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: ${{ format( 'shairport-sync-{0}-arm', runner.os ) }}
+        path: ./shairport_with_libs
